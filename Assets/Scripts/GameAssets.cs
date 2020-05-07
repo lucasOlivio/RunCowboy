@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class GameAssets : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private static GameAssets instance;
+
+    public static GameAssets GetInstance() {
+        return instance;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void Awake() {
+        instance = this;
     }
+
+    public Transform ground;
+
+    public List<Transform> rightBorderList;
+    public List<Transform> leftBorderList;
 }
