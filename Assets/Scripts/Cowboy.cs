@@ -55,6 +55,8 @@ public class Cowboy : MonoBehaviour
 
     private void FollowTouch() {
         // Player folows the X position of the click at a certain speed
+        Touch touch = Input.GetTouch(0);
+
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(touch.position);
         Vector2 targetPos = new Vector2(mousePos.x, mousePos.y);
 
