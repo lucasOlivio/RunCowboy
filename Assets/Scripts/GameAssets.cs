@@ -15,6 +15,7 @@ public class GameAssets : MonoBehaviour
     }
 
     public Transform ground;
+    public Transform pfFence;
 
     public List<Transform> rightBorderList;
     public List<Transform> leftBorderList;

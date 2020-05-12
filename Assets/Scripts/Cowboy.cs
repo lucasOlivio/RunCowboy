@@ -20,6 +20,16 @@ public class Cowboy : MonoBehaviour
     public event EventHandler OnStart;
     public float speed;
 
+    private static Cowboy instance;
+
+    public static Cowboy GetInstance() {
+        return instance;
+    }
+
+    private void Awake() {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
