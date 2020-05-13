@@ -6,21 +6,25 @@ public class Level : MonoBehaviour
 {
     private const float BORDER_HEIGHT = 26.2f;
     private const float BORDER_Y_DESTROY = -8f;
-    private const float BARRIER_Y_DESTROY = -9f;
+    private const float OBJS_Y_DESTROY = -9f;
 
     public float ySpeed;
     public float spawnTime;
 
-    public List<Transform> barrierList;
+    public List<Transform> objsList;
     public List<Transform> spawnList;
 
     private float nextSpawn = 0f;
-    private List<int> lastHoles;
+    [SerializeField] 
+    private List<int> possibleHoles;
+    [SerializeField] 
+    private List<int> allowedHoles;
 
     // Ground movement variables
     private Vector2 offset;
     private Material groundMaterial;
     private Transform pfFence;
+    private Transform pfCoin;
 
     // General Assets
     private GameAssets assets;
@@ -31,25 +35,41 @@ public class Level : MonoBehaviour
         Playing
     }
 
+    private static Level instance;
+
+    public static Level GetInstance() {
+        return instance;
+    }
+
+    private void Awake() {
+        instance = this;
+    }
+
     private void Start() {
         state = State.Waiting;
         assets = GameAssets.GetInstance();
 
         groundMaterial = assets.ground.GetComponent<Renderer>().material;
         pfFence = assets.pfFence;
-
-        lastHoles = new List<int> {spawnList.Count};
+        pfCoin = assets.pfCoin;
 
         Cowboy.GetInstance().OnStart += OnStart;
+
+        possibleHoles = new List<int>();
+        allowedHoles = new List<int>();
+        for(int i = 0; i < spawnList.Count - 1; i++){
+            possibleHoles.Add(i);
+        }
+        allowedHoles.AddRange(possibleHoles);
     }
 
     private void Update() {
         if(state == State.Playing){
             MoveGround();
-            borderMove(assets.leftBorderList);
-            borderMove(assets.rightBorderList);
-            spawnBarriers(2);
-            barrierMove();
+            BorderMove(assets.leftBorderList);
+            BorderMove(assets.rightBorderList);
+            SpawnObjs(2);
+            ObjsMove();
         }
     }
 
@@ -69,7 +89,7 @@ public class Level : MonoBehaviour
         groundMaterial.mainTextureOffset += offset * Time.fixedDeltaTime;
     }
 
-    private void borderMove(List<Transform> borderList) {
+    private void BorderMove(List<Transform> borderList) {
         /* 
          * Moves the borders downwards at a fixed speed, when the border passes a certain high it is moved over the top border
          */
@@ -93,74 +113,69 @@ public class Level : MonoBehaviour
         }
     }
 
-    public static int randomExcept(int max, List<int> exclude) 
-    {
-        System.Random r = new System.Random();
-        int result = r.Next(max - exclude.Count);
-
-        for (int i = 0; i < exclude.Count; i++) 
-        {
-            if (result < exclude[i])
-                return result;
-            result++;
-        }
-        return result;
-    }
-
     /*
      * BARRIERS
      */
 
-    private void spawnBarriers(int holesNumber) {
-        /* Creates a line of barriers every x time
+    private void SpawnObjs(int holesNumber) {
+        /* Creates a line of objs every x time
          */
 
         nextSpawn -= Time.fixedDeltaTime;
 
         
         if(nextSpawn <= 0){
-            float barrierX, barrierY;
-            Transform barrier;
+            float objsX, objsY;
+            Transform obj;
             List<int> holesIndex = new List<int>();
 
             for(int i = 0; i < holesNumber; i++){
-                int newHole = randomExcept(spawnList.Count, lastHoles);
+                int newHole = allowedHoles[Random.Range(0, allowedHoles.Count - 1)];
+
                 holesIndex.Add(newHole);
-                lastHoles.Add(newHole);
-                lastHoles.Sort();
+                allowedHoles.Remove(newHole);
             }
 
-            lastHoles = holesIndex;
-            lastHoles.Sort();
+            if(allowedHoles.Count == 0) {
+                allowedHoles.AddRange(possibleHoles);
+            }
 
             for(int i = 0; i<spawnList.Count; i++){
-                if(holesIndex.Contains(i))
-                    continue;
+                objsX = spawnList[i].position.x;
+                objsY = spawnList[i].position.y;
 
-                barrierX = spawnList[i].position.x;
-                barrierY = spawnList[i].position.y;
-                barrier = Instantiate(pfFence, new Vector3(barrierX, barrierY, 0), Quaternion.identity);
-                barrierList.Add(barrier);
+                if(holesIndex.Contains(i)){
+                    obj = Instantiate(pfCoin, new Vector3(objsX, objsY, 0), Quaternion.identity);
+                } else {
+                    obj = Instantiate(pfFence, new Vector3(objsX, objsY, 0), Quaternion.identity);
+                }
+
+                objsList.Add(obj);
             }
             nextSpawn = spawnTime;
         }
     }
 
-    private void barrierMove() {
-        /* Moves the barrier downwards at a fixed speed, when the barrier passes a certain high it is destroyed
+    public void RemoveObj(Transform obj) {
+        Destroy(obj.gameObject);
+        objsList.Remove(obj);
+    }
+
+    private void ObjsMove() {
+        /* Moves the objs downwards at a fixed speed, when the objs passes a certain high it is destroyed
          */
 
-        for (int i = 0; i < barrierList.Count; i++)
+        for (int i = 0; i < objsList.Count; i++)
         {
-            Transform barrier = barrierList[i];
+            Transform objs = objsList[i];
 
-            barrier.position += new Vector3(0, -1, 0) * ySpeed * Time.fixedDeltaTime;
+            objs.position += new Vector3(0, -1, 0) * ySpeed * Time.fixedDeltaTime;
 
-            if(barrier.position.y < BARRIER_Y_DESTROY) {
-                Destroy(barrier.gameObject);
-                barrierList.RemoveAt(i);
+            if(objs.position.y < OBJS_Y_DESTROY) {
+                Destroy(objs.gameObject);
+                objsList.RemoveAt(i);
                 i--;
             }
         }
-    } 
+    }
 }

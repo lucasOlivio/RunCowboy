@@ -8,6 +8,8 @@ public class Cowboy : MonoBehaviour
     private const float PLAYER_Y = -2f;
     private const float MAP_RANGE = 3.5f;
 
+    private int score;
+
     private Rigidbody2D playerBody;
     private Vector3 touchRealPosition;
 
@@ -33,6 +35,7 @@ public class Cowboy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        score = 0;
         state = State.Waiting;
         playerBody = GetComponent<Rigidbody2D>();
     }
@@ -82,5 +85,17 @@ public class Cowboy : MonoBehaviour
         targetPos.x = Mathf.Clamp(targetPos.x, -MAP_RANGE, MAP_RANGE);
         targetPos.y = PLAYER_Y;
         transform.position = Vector2.Lerp(transform.position, targetPos, Time.fixedDeltaTime * speed);
+    }
+
+    public int GetScore() {
+        return score;
+    }
+
+    private void OnTriggerEnter2D(Collider2D col) {
+        if(col.tag == "Coin") {
+            score++;
+            Level.GetInstance().RemoveObj(col.GetComponent<Transform>());
+            SoundManager.PlaySound(SoundManager.Sound.Coin);
+        }
     }
 }
