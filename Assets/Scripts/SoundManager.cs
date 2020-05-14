@@ -5,7 +5,8 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public enum Sound {
-        Coin
+        Coin,
+        WoodCrack
     }
 
     public static void PlaySound(Sound sound) {

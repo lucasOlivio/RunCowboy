@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Cowboy : MonoBehaviour
 {
-    private const float PLAYER_Y = -2f;
+    private const float PLAYER_Y = -4f;
     private const float MAP_RANGE = 3.5f;
 
     private int score;
@@ -16,10 +16,11 @@ public class Cowboy : MonoBehaviour
     private State state;
     private enum State {
         Waiting,
-        Playing
+        Playing,
+        Dead
     }
 
-    public event EventHandler OnStart;
+    public event EventHandler OnStart, OnEnd;
     public float speed;
 
     private static Cowboy instance;
@@ -96,6 +97,13 @@ public class Cowboy : MonoBehaviour
             score++;
             Level.GetInstance().RemoveObj(col.GetComponent<Transform>());
             SoundManager.PlaySound(SoundManager.Sound.Coin);
+        } else if(col.tag == "Fence") {
+            state = State.Dead;
+
+            col.transform.GetComponent<Animator>().enabled = true;
+
+            if(OnEnd != null) OnEnd(this, EventArgs.Empty);
+            SoundManager.PlaySound(SoundManager.Sound.WoodCrack);
         }
     }
 }
