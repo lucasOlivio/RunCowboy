@@ -8,7 +8,9 @@ public class Level : MonoBehaviour
     private const float BORDER_Y_DESTROY = -8f;
     private const float OBJS_Y_DESTROY = -9f;
 
+    public float initialYSpeed;
     public float ySpeed;
+    public float initialSpawnTime;
     public float spawnTime;
 
     public List<Transform> objsList;
@@ -46,6 +48,8 @@ public class Level : MonoBehaviour
     }
 
     private void Start() {
+        spawnTime = initialSpawnTime;
+        ySpeed = initialYSpeed;
         state = State.Waiting;
         assets = GameAssets.GetInstance();
 
@@ -94,7 +98,7 @@ public class Level : MonoBehaviour
          * Moves the borders downwards at a fixed speed, when the border passes a certain high it is moved over the top border
          */
         
-        float yTopBorder = -100f;
+        float yTopBorder = 0f;
 
         foreach (Transform border in borderList)
         {
@@ -108,7 +112,7 @@ public class Level : MonoBehaviour
                     }   
                 }
                 
-                border.position = new Vector3(border.position.x, yTopBorder + (BORDER_HEIGHT * .64f), border.position.z);
+                border.position = new Vector3(border.position.x, yTopBorder + (BORDER_HEIGHT * .6f), border.position.z);
             }
         }
     }

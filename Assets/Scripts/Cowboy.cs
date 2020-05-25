@@ -9,6 +9,8 @@ public class Cowboy : MonoBehaviour
     private const float MAP_RANGE = 3.5f;
 
     private int score;
+    private float dificulty = .0f;
+    private float maxDificulty = .3f;
 
     private Rigidbody2D playerBody;
     private Vector3 touchRealPosition;
@@ -39,6 +41,8 @@ public class Cowboy : MonoBehaviour
         score = 0;
         state = State.Waiting;
         playerBody = GetComponent<Rigidbody2D>();
+
+        GetComponent<Animator>().enabled = false;
     }
 
     void FixedUpdate() {
@@ -49,6 +53,7 @@ public class Cowboy : MonoBehaviour
                     FollowTouch();
                     break;
                 case State.Waiting:
+                    GetComponent<Animator>().enabled = true;
                     state = State.Playing;
                     if(OnStart != null) OnStart(this, EventArgs.Empty);
                     break;
@@ -56,15 +61,6 @@ public class Cowboy : MonoBehaviour
                     break;
             }
         }
-
-        // FOR TESTING ON PC ONLY! REMOVE WHEN BUILD TO PRODUCTION!
-        if(Input.GetMouseButtonDown(0) && state == State.Waiting) {
-            state = State.Playing;
-            if(OnStart != null) OnStart(this, EventArgs.Empty);
-        }
-
-        if(state == State.Playing)
-            FollorMouse();
     }
 
     private void FollowTouch() {
@@ -79,15 +75,6 @@ public class Cowboy : MonoBehaviour
         transform.position = Vector2.Lerp(transform.position, targetPos, Time.fixedDeltaTime * speed);
     }
 
-    private void FollorMouse() {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 targetPos = new Vector2(mousePos.x, mousePos.y);
-
-        targetPos.x = Mathf.Clamp(targetPos.x, -MAP_RANGE, MAP_RANGE);
-        targetPos.y = PLAYER_Y;
-        transform.position = Vector2.Lerp(transform.position, targetPos, Time.fixedDeltaTime * speed);
-    }
-
     public int GetScore() {
         return score;
     }
@@ -95,7 +82,16 @@ public class Cowboy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col) {
         if(col.tag == "Coin") {
             score++;
-            Level.GetInstance().RemoveObj(col.GetComponent<Transform>());
+
+            Level level = Level.GetInstance();
+
+            if(score%10==0 && dificulty < maxDificulty){
+                dificulty += .1f;
+                level.ySpeed += level.initialYSpeed * dificulty;
+                level.spawnTime -= level.initialSpawnTime * dificulty;
+            }
+
+            level.RemoveObj(col.GetComponent<Transform>());
             SoundManager.PlaySound(SoundManager.Sound.Coin);
         } else if(col.tag == "Fence") {
             state = State.Dead;
