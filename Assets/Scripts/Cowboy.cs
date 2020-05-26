@@ -88,7 +88,7 @@ public class Cowboy : MonoBehaviour
             if(score%10==0 && dificulty < maxDificulty){
                 dificulty += .1f;
                 level.ySpeed += level.initialYSpeed * dificulty;
-                level.spawnTime -= level.initialSpawnTime * dificulty;
+                level.spawnTime -= (level.initialSpawnTime * dificulty) * .75f;
             }
 
             level.RemoveObj(col.GetComponent<Transform>());

@@ -275,7 +275,7 @@ PrefabInstance:
     - target: {fileID: 9004424415101260411, guid: 5fefd14cbaf8273fb9eafdec163d8616,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 24.8
+      value: 24.7
       objectReference: {fileID: 0}
     - target: {fileID: 9004424415101260411, guid: 5fefd14cbaf8273fb9eafdec163d8616,
         type: 3}
@@ -421,7 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9338d1fd5f223bdfe9c2eb3d5a61a0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 10
 --- !u!95 &258358918
 Animator:
   serializedVersion: 3
@@ -701,7 +701,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32d252c73a16ab062a1fb86b81bfd3dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialYSpeed: 7
   ySpeed: 7
+  initialSpawnTime: 1
   spawnTime: 1
   objsList: []
   spawnList:
@@ -737,7 +739,7 @@ PrefabInstance:
     - target: {fileID: 9004424415101260411, guid: 5fefd14cbaf8273fb9eafdec163d8616,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 41.6
+      value: 41.45
       objectReference: {fileID: 0}
     - target: {fileID: 9004424415101260411, guid: 5fefd14cbaf8273fb9eafdec163d8616,
         type: 3}
@@ -1170,7 +1172,7 @@ PrefabInstance:
     - target: {fileID: 9004424415101260411, guid: 5fefd14cbaf8273fb9eafdec163d8616,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 21.2
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 9004424415101260411, guid: 5fefd14cbaf8273fb9eafdec163d8616,
         type: 3}
@@ -1869,7 +1871,7 @@ PrefabInstance:
     - target: {fileID: 9004424415101260411, guid: 5fefd14cbaf8273fb9eafdec163d8616,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 38
+      value: 37.76
       objectReference: {fileID: 0}
     - target: {fileID: 9004424415101260411, guid: 5fefd14cbaf8273fb9eafdec163d8616,
         type: 3}
