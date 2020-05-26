@@ -42,6 +42,7 @@ public class Cowboy : MonoBehaviour
         state = State.Waiting;
         playerBody = GetComponent<Rigidbody2D>();
 
+        GetComponent<AudioSource>().enabled = false;
         GetComponent<Animator>().enabled = false;
     }
 
@@ -53,6 +54,7 @@ public class Cowboy : MonoBehaviour
                     FollowTouch();
                     break;
                 case State.Waiting:
+                    GetComponent<AudioSource>().enabled = true;
                     GetComponent<Animator>().enabled = true;
                     state = State.Playing;
                     if(OnStart != null) OnStart(this, EventArgs.Empty);
