@@ -10,7 +10,7 @@ public class Cowboy : MonoBehaviour
 
     private int score;
     private float dificulty = .0f;
-    private float maxDificulty = .3f;
+    private float maxDificulty = 0.8f;
 
     private Rigidbody2D playerBody;
     private Vector3 touchRealPosition;
@@ -63,6 +63,24 @@ public class Cowboy : MonoBehaviour
                     break;
             }
         }
+
+        // FOR TESTING ON PC ONLY! REMOVE WHEN BUILD TO PRODUCTION!
+        if(Input.GetMouseButtonDown(0) && state == State.Waiting) {
+            state = State.Playing;
+            if(OnStart != null) OnStart(this, EventArgs.Empty);
+        }
+
+        if(state == State.Playing)
+            FollorMouse();
+    }
+
+    private void FollorMouse() {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 targetPos = new Vector2(mousePos.x, mousePos.y);
+
+        targetPos.x = Mathf.Clamp(targetPos.x, -MAP_RANGE, MAP_RANGE);
+        targetPos.y = PLAYER_Y;
+        transform.position = Vector2.Lerp(transform.position, targetPos, Time.fixedDeltaTime * speed);
     }
 
     private void FollowTouch() {
@@ -89,14 +107,17 @@ public class Cowboy : MonoBehaviour
 
             if(score%10==0 && dificulty < maxDificulty){
                 dificulty += .1f;
-                level.ySpeed += level.initialYSpeed * dificulty;
-                level.spawnTime -= (level.initialSpawnTime * dificulty) * .75f;
+                level.ySpeed = level.initialYSpeed + (level.initialYSpeed * dificulty);
+
+                level.spawnTime = level.spawnTime - ((level.initialSpawnTime * dificulty) * .5f);
             }
 
             level.RemoveObj(col.GetComponent<Transform>());
             SoundManager.PlaySound(SoundManager.Sound.Coin);
         } else if(col.tag == "Fence") {
             state = State.Dead;
+
+            GetComponent<AudioSource>().enabled = false;
 
             col.transform.GetComponent<Animator>().enabled = true;
 

@@ -58,10 +58,11 @@ public class Level : MonoBehaviour
         pfCoin = assets.pfCoin;
 
         Cowboy.GetInstance().OnStart += OnStart;
+        Cowboy.GetInstance().OnEnd += OnEnd;
 
         possibleHoles = new List<int>();
         allowedHoles = new List<int>();
-        for(int i = 0; i < spawnList.Count - 1; i++){
+        for(int i = 0; i < spawnList.Count; i++){
             possibleHoles.Add(i);
         }
         allowedHoles.AddRange(possibleHoles);
@@ -79,6 +80,10 @@ public class Level : MonoBehaviour
 
     private void OnStart(object sender, System.EventArgs e) {
         state = State.Playing;
+    }
+
+    private void OnEnd(object sender, System.EventArgs e) {
+        GetComponent<AudioSource>().enabled = false;
     }
 
     /*
@@ -134,14 +139,14 @@ public class Level : MonoBehaviour
             List<int> holesIndex = new List<int>();
 
             for(int i = 0; i < holesNumber; i++){
-                int newHole = allowedHoles[Random.Range(0, allowedHoles.Count - 1)];
+                int newHole = allowedHoles[Random.Range(0, allowedHoles.Count)];
 
                 holesIndex.Add(newHole);
                 allowedHoles.Remove(newHole);
-            }
 
-            if(allowedHoles.Count == 0) {
-                allowedHoles.AddRange(possibleHoles);
+                if(allowedHoles.Count == 0) {
+                    allowedHoles.AddRange(possibleHoles);
+                }
             }
 
             for(int i = 0; i<spawnList.Count; i++){
