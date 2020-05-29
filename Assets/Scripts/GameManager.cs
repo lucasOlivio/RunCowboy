@@ -9,9 +9,54 @@ public class GameManager : MonoBehaviour
     public float slowness = 10f;
     public Text startText;
 
+    public float initialYSpeed;
+    public float ySpeed;
+    private Vector2 offset;
+
+    private static GameManager instance;
+
+    public static GameManager GetInstance() {
+        return instance;
+    }
+
+    private void Awake() {
+        instance = this;
+    }
+
     public void Start() {
+
+        string sceneName = SceneManager.GetActiveScene().name;
+        
+        if(sceneName == "MenuScene") {
+            SoundManager.GetInstance().PlaySoundBackground(SoundManager.SoundBackground.MenuBackgroundMusic);
+        } else {
+            SoundManager.GetInstance().PlaySoundBackground(SoundManager.SoundBackground.BackgroundMusic);
+        }
+
         Cowboy.GetInstance().OnEnd += OnEnd;
         Cowboy.GetInstance().OnStart += OnStart;
+    }
+
+    public void Update() {
+        MoveGround();
+        MoveBorder();
+    }
+
+    private void MoveGround() {
+        /*
+         * Gives the ground a moving animation by changing the offset of the material
+         */
+        offset = new Vector2(0, ySpeed);
+        GameAssets.GetInstance().ground.GetComponent<Renderer>().material.mainTextureOffset += offset * Time.fixedDeltaTime;
+    }
+
+    private void MoveBorder() {
+        /*
+         * Gives the border a moving animation by changing the offset of the material
+         */
+        offset = new Vector2(0, ySpeed/8);
+        GameAssets.GetInstance().borderLeft.GetComponent<Renderer>().material.mainTextureOffset += offset * Time.fixedDeltaTime;
+        GameAssets.GetInstance().borderRight.GetComponent<Renderer>().material.mainTextureOffset += offset * Time.fixedDeltaTime;
     }
 
     public void OnStart(object sender, System.EventArgs e) {
@@ -22,6 +67,7 @@ public class GameManager : MonoBehaviour
 
     public void OnEnd(object sender, System.EventArgs e) {
         SoundManager.GetInstance().StopSoundBackground(SoundManager.SoundBackground.HorseRunning);
+        SoundManager.GetInstance().PlaySoundEffect(SoundManager.SoundEffect.WoodCrack);
         StartCoroutine(RestartLevel());
     }
 

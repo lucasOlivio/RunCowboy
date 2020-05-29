@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Cowboy : MonoBehaviour
 {
+    public float animSpeed;
+
     private const float PLAYER_Y = -4f;
     private const float MAP_RANGE = 3.5f;
 
@@ -32,28 +34,26 @@ public class Cowboy : MonoBehaviour
     }
 
     private void Awake() {
-        instance = this;
+		instance = this;
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<Animator>().speed = animSpeed;
+
         score = 0;
         state = State.Waiting;
         playerBody = GetComponent<Rigidbody2D>();
-
-        GetComponent<Animator>().enabled = false;
     }
 
     void FixedUpdate() {
-
         if(Input.touchCount > 0) {
             switch(state) {
                 case State.Playing:
                     FollowTouch();
                     break;
                 case State.Waiting:
-                    GetComponent<Animator>().enabled = true;
                     state = State.Playing;
                     if(OnStart != null) OnStart(this, EventArgs.Empty);
                     break;
@@ -103,9 +103,9 @@ public class Cowboy : MonoBehaviour
 
             Level level = Level.GetInstance();
 
-            if(score%10==0 && dificulty < maxDificulty){
+            if(score%5==0 && dificulty < maxDificulty){
                 dificulty += .1f;
-                level.ySpeed = level.initialYSpeed + (level.initialYSpeed * dificulty);
+                GameManager.GetInstance().ySpeed = GameManager.GetInstance().initialYSpeed + (GameManager.GetInstance().initialYSpeed * dificulty);
 
                 level.spawnTime = level.spawnTime - ((level.initialSpawnTime * dificulty) * .5f);
             }
@@ -115,10 +115,9 @@ public class Cowboy : MonoBehaviour
         } else if(col.tag == "Fence") {
             state = State.Dead;
 
-            col.transform.GetComponent<Animator>().enabled = true;
+            col.transform.GetComponent<Animator>().enabled = false;
 
             if(OnEnd != null) OnEnd(this, EventArgs.Empty);
-            SoundManager.GetInstance().PlaySoundEffect(SoundManager.SoundEffect.WoodCrack);
         }
     }
 }

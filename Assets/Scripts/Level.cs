@@ -8,8 +8,6 @@ public class Level : MonoBehaviour
     private const float BORDER_Y_DESTROY = -8f;
     private const float OBJS_Y_DESTROY = -9f;
 
-    public float initialYSpeed;
-    public float ySpeed;
     public float initialSpawnTime;
     public float spawnTime;
 
@@ -24,7 +22,6 @@ public class Level : MonoBehaviour
 
     // Ground movement variables
     private Vector2 offset;
-    private Material groundMaterial;
     private Transform pfFence;
     private Transform pfCoin;
 
@@ -48,14 +45,11 @@ public class Level : MonoBehaviour
     }
 
     private void Start() {
-        SoundManager.GetInstance().PlaySoundBackground(SoundManager.SoundBackground.BackgroundMusic);
-
         spawnTime = initialSpawnTime;
-        ySpeed = initialYSpeed;
+        GameManager.GetInstance().ySpeed = GameManager.GetInstance().initialYSpeed;
         state = State.Waiting;
         assets = GameAssets.GetInstance();
 
-        groundMaterial = assets.ground.GetComponent<Renderer>().material;
         pfFence = assets.pfFence;
         pfCoin = assets.pfCoin;
 
@@ -72,9 +66,6 @@ public class Level : MonoBehaviour
 
     private void Update() {
         if(state == State.Playing){
-            MoveGround();
-            BorderMove(assets.leftBorderList);
-            BorderMove(assets.rightBorderList);
             SpawnObjs(2);
             ObjsMove();
         }
@@ -86,42 +77,6 @@ public class Level : MonoBehaviour
 
     private void OnEnd(object sender, System.EventArgs e) {
         SoundManager.GetInstance().StopSoundBackground(SoundManager.SoundBackground.BackgroundMusic);
-    }
-
-    /*
-     * WALLS
-     */
-
-    private void MoveGround() {
-        /*
-         * Gives the ground a moving animation by changing the offset of the material
-         */
-        offset = new Vector2(0, ySpeed);
-        groundMaterial.mainTextureOffset += offset * Time.fixedDeltaTime;
-    }
-
-    private void BorderMove(List<Transform> borderList) {
-        /* 
-         * Moves the borders downwards at a fixed speed, when the border passes a certain high it is moved over the top border
-         */
-        
-        float yTopBorder = 0f;
-
-        foreach (Transform border in borderList)
-        {
-            border.position += new Vector3(0, -1, 0) * ySpeed * Time.fixedDeltaTime;
-
-            if(border.position.y < BORDER_Y_DESTROY) {
-                for (int i = 0; i < borderList.Count; i++)
-                {
-                    if(borderList[i].position.y > yTopBorder){
-                        yTopBorder = borderList[i].position.y;
-                    }   
-                }
-                
-                border.position = new Vector3(border.position.x, yTopBorder + (BORDER_HEIGHT * .6f), border.position.z);
-            }
-        }
     }
 
     /*
@@ -180,7 +135,7 @@ public class Level : MonoBehaviour
         {
             Transform objs = objsList[i];
 
-            objs.position += new Vector3(0, -1, 0) * ySpeed * Time.fixedDeltaTime;
+            objs.position += new Vector3(0, -1, 0) * GameManager.GetInstance().ySpeed * Time.fixedDeltaTime;
 
             if(objs.position.y < OBJS_Y_DESTROY) {
                 Destroy(objs.gameObject);

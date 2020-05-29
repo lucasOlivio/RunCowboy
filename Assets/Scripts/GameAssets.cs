@@ -16,11 +16,10 @@ public class GameAssets : MonoBehaviour
     }
 
     public Transform ground;
+    public Transform borderLeft;
+    public Transform borderRight;
     public Transform pfFence;
     public Transform pfCoin;
-
-    public List<Transform> rightBorderList;
-    public List<Transform> leftBorderList;
 
     public SoundEffectAudioClip[] soundEffectAudioClipArray;
     public SoundBackgroundAudioSource[] soundBackgroundAudioSourceArray;

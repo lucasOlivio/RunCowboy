@@ -11,7 +11,8 @@ public class SoundManager : MonoBehaviour
 
     public enum SoundBackground {
         BackgroundMusic,
-        HorseRunning
+        HorseRunning,
+        MenuBackgroundMusic
     }
 
     // Singleton instance.
