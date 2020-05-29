@@ -48,6 +48,8 @@ public class Level : MonoBehaviour
     }
 
     private void Start() {
+        SoundManager.GetInstance().PlaySoundBackground(SoundManager.SoundBackground.BackgroundMusic);
+
         spawnTime = initialSpawnTime;
         ySpeed = initialYSpeed;
         state = State.Waiting;
@@ -83,7 +85,7 @@ public class Level : MonoBehaviour
     }
 
     private void OnEnd(object sender, System.EventArgs e) {
-        GetComponent<AudioSource>().enabled = false;
+        SoundManager.GetInstance().StopSoundBackground(SoundManager.SoundBackground.BackgroundMusic);
     }
 
     /*

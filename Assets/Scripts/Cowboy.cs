@@ -42,7 +42,6 @@ public class Cowboy : MonoBehaviour
         state = State.Waiting;
         playerBody = GetComponent<Rigidbody2D>();
 
-        GetComponent<AudioSource>().enabled = false;
         GetComponent<Animator>().enabled = false;
     }
 
@@ -54,7 +53,6 @@ public class Cowboy : MonoBehaviour
                     FollowTouch();
                     break;
                 case State.Waiting:
-                    GetComponent<AudioSource>().enabled = true;
                     GetComponent<Animator>().enabled = true;
                     state = State.Playing;
                     if(OnStart != null) OnStart(this, EventArgs.Empty);
@@ -113,16 +111,14 @@ public class Cowboy : MonoBehaviour
             }
 
             level.RemoveObj(col.GetComponent<Transform>());
-            SoundManager.PlaySound(SoundManager.Sound.Coin);
+            SoundManager.GetInstance().PlaySoundEffect(SoundManager.SoundEffect.Coin);
         } else if(col.tag == "Fence") {
             state = State.Dead;
-
-            GetComponent<AudioSource>().enabled = false;
 
             col.transform.GetComponent<Animator>().enabled = true;
 
             if(OnEnd != null) OnEnd(this, EventArgs.Empty);
-            SoundManager.PlaySound(SoundManager.Sound.WoodCrack);
+            SoundManager.GetInstance().PlaySoundEffect(SoundManager.SoundEffect.WoodCrack);
         }
     }
 }

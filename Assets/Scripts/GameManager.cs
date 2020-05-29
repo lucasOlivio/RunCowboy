@@ -15,11 +15,13 @@ public class GameManager : MonoBehaviour
     }
 
     public void OnStart(object sender, System.EventArgs e) {
+        SoundManager.GetInstance().PlaySoundBackground(SoundManager.SoundBackground.HorseRunning);
         startText.GetComponent<Text>().enabled = false;
     }
 
 
     public void OnEnd(object sender, System.EventArgs e) {
+        SoundManager.GetInstance().StopSoundBackground(SoundManager.SoundBackground.HorseRunning);
         StartCoroutine(RestartLevel());
     }
 

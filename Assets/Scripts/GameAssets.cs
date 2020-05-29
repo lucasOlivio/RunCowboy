@@ -22,11 +22,18 @@ public class GameAssets : MonoBehaviour
     public List<Transform> rightBorderList;
     public List<Transform> leftBorderList;
 
-    public SoundAudioClip[] soundAudioClipArray;
+    public SoundEffectAudioClip[] soundEffectAudioClipArray;
+    public SoundBackgroundAudioSource[] soundBackgroundAudioSourceArray;
 
     [Serializable]
-    public class SoundAudioClip {
-        public SoundManager.Sound sound;
+    public class SoundEffectAudioClip {
+        public SoundManager.SoundEffect sound;
         public AudioClip audioClip;
+    }
+
+    [Serializable]
+    public class SoundBackgroundAudioSource {
+        public SoundManager.SoundBackground sound;
+        public AudioSource audioSource;
     }
 }
