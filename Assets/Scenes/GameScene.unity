@@ -317,6 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9338d1fd5f223bdfe9c2eb3d5a61a0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animSpeed: 1
   speed: 10
 --- !u!95 &258358918
 Animator:
@@ -786,8 +787,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32d252c73a16ab062a1fb86b81bfd3dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialYSpeed: 7
-  ySpeed: 0
   initialSpawnTime: 1
   spawnTime: 1
   objsList: []
@@ -1426,6 +1425,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowness: 10
   startText: {fileID: 195134479}
+  initialYSpeed: 7
+  ySpeed: 7
 --- !u!4 &1412497667 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 24933001872433702, guid: 6d30cf3c226a47355ae763b31eded337,

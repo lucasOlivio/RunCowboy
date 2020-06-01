@@ -29,12 +29,11 @@ public class GameManager : MonoBehaviour
         
         if(sceneName == "MenuScene") {
             SoundManager.GetInstance().PlaySoundBackground(SoundManager.SoundBackground.MenuBackgroundMusic);
-        } else {
+        } else if(sceneName == "GameScene") {
             SoundManager.GetInstance().PlaySoundBackground(SoundManager.SoundBackground.BackgroundMusic);
+            Cowboy.GetInstance().OnEnd += OnEnd;
+            Cowboy.GetInstance().OnStart += OnStart;
         }
-
-        Cowboy.GetInstance().OnEnd += OnEnd;
-        Cowboy.GetInstance().OnStart += OnStart;
     }
 
     public void Update() {

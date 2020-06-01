@@ -69,10 +69,10 @@ public class Cowboy : MonoBehaviour
         }
 
         if(state == State.Playing)
-            FollorMouse();
+            FollowMouse();
     }
 
-    private void FollorMouse() {
+    private void FollowMouse() {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 targetPos = new Vector2(mousePos.x, mousePos.y);
 
