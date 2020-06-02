@@ -109,7 +109,7 @@ public class Cowboy : MonoBehaviour
                 dificulty += .1f;
                 GameManager.GetInstance().ySpeed = GameManager.GetInstance().initialYSpeed + (GameManager.GetInstance().initialYSpeed * dificulty);
 
-                level.spawnTime = level.spawnTime - ((level.initialSpawnTime * dificulty) * .5f);
+                level.spawnTime = level.initialSpawnTime - ((level.initialSpawnTime * dificulty) * .75f);
             }
 
             level.RemoveObj(col.GetComponent<Transform>());
