@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public static class Loader {
+
     public enum Scene {
         GameScene,
         LoadingScene,
@@ -11,6 +12,11 @@ public static class Loader {
     }
 
     private static Scene targetScene;
+
+    public static void animGoDown(bool goDown) {
+        Cowboy.goDown = goDown;
+        ButtonAnim.goDown = goDown;
+    }
 
     public static void Load(Scene scene) {
         SceneManager.LoadScene(Scene.LoadingScene.ToString());

@@ -8,7 +8,7 @@ public class MenuButton : MonoBehaviour
     private void Awake() {
         GetComponent<Button_UI>().ClickFunc = () => {
             GameManager.GetInstance().NormalTime();
-            Cowboy.goDown = false;
+            Loader.animGoDown(false);
             Loader.Load(Loader.Scene.MenuScene);
         };
     }
