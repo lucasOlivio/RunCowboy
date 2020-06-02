@@ -6,6 +6,7 @@ using UnityEngine;
 public class Cowboy : MonoBehaviour
 {
     public float animSpeed;
+    public static bool goDown = true;
 
     private const float PLAYER_Y = -4f;
     private const float MAP_RANGE = 3.5f;
@@ -40,6 +41,7 @@ public class Cowboy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<Animator>().SetBool("goDown", goDown);
         GetComponent<Animator>().speed = animSpeed;
 
         score = 0;
@@ -48,51 +50,43 @@ public class Cowboy : MonoBehaviour
     }
 
     void FixedUpdate() {
-        if(Input.touchCount > 0) {
-            switch(state) {
-                case State.Playing:
-                    FollowTouch();
-                    break;
-                case State.Waiting:
-                    state = State.Playing;
-                    if(OnStart != null) OnStart(this, EventArgs.Empty);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        // FOR TESTING ON PC ONLY! REMOVE WHEN BUILD TO PRODUCTION!
-        if(Input.GetMouseButtonDown(0) && state == State.Waiting) {
-            state = State.Playing;
-            if(OnStart != null) OnStart(this, EventArgs.Empty);
-        }
-
-        if(state == State.Playing)
-            FollowMouse();
-    }
-
-    private void FollowMouse() {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 targetPos = new Vector2(mousePos.x, mousePos.y);
-
-        targetPos.x = Mathf.Clamp(targetPos.x, -MAP_RANGE, MAP_RANGE);
-        targetPos.y = PLAYER_Y;
-
-        transform.position = Vector2.Lerp(transform.position, targetPos, Time.fixedDeltaTime * speed);
+        FollowTouch();
     }
 
     private void FollowTouch() {
-        // Player folows the X position of the click at a certain speed
-        Touch touch = Input.GetTouch(0);
+        switch(state) {
+            case State.Playing:
+                
+                // Player folows the X position of the click at a certain speed
+                Vector3 touchPos;
+                if(Input.touchCount > 0) {
+                    Touch touch = Input.GetTouch(0);
+                    touchPos = Camera.main.ScreenToWorldPoint(touch.position);
+                }else{
+                    touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                }
 
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(touch.position);
-        Vector2 targetPos = new Vector2(mousePos.x, mousePos.y);
+                if(touchPos != null && touchPos.y < 7) {
+                    Vector2 targetPos = new Vector2(touchPos.x, touchPos.y);
 
-        targetPos.x = Mathf.Clamp(targetPos.x, -MAP_RANGE, MAP_RANGE);
-        targetPos.y = PLAYER_Y;
-        
-        transform.position = Vector2.Lerp(transform.position, targetPos, Time.fixedDeltaTime * speed);
+                    targetPos.x = Mathf.Clamp(targetPos.x, -MAP_RANGE, MAP_RANGE);
+                    targetPos.y = PLAYER_Y;
+                    
+                    transform.position = Vector2.Lerp(transform.position, targetPos, Time.fixedDeltaTime * speed);
+                }
+
+                break;
+            case State.Waiting:
+
+                if(Input.GetMouseButtonDown(0) || Input.touchCount > 0) {
+                    state = State.Playing;
+                    if(OnStart != null) OnStart(this, EventArgs.Empty);
+                }
+                
+                break;
+            default:
+                break;
+        }
     }
 
     public int GetScore() {

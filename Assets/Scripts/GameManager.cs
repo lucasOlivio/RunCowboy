@@ -33,8 +33,6 @@ public class GameManager : MonoBehaviour
             SoundManager.GetInstance().PlaySoundBackground(SoundManager.SoundBackground.BackgroundMusic);
             Cowboy.GetInstance().OnEnd += OnEnd;
             Cowboy.GetInstance().OnStart += OnStart;
-        } else if(sceneName == "LoadingScene") {
-            Cowboy.GetInstance().GetComponent<Animation>().Play();
         }
     }
 
@@ -72,14 +70,24 @@ public class GameManager : MonoBehaviour
         StartCoroutine(RestartLevel());
     }
 
-    IEnumerator RestartLevel() {
+    public void SlowTime() {
         Time.timeScale = 1f / slowness;
         Time.fixedDeltaTime =  Time.fixedDeltaTime / slowness;
+    }
+
+    public void NormalTime() {
+        if(Time.timeScale != 1f){
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime =  Time.fixedDeltaTime * slowness;
+        }
+    }
+
+    IEnumerator RestartLevel() {
+        SlowTime();
 
         yield return new WaitForSeconds(1.7f / slowness);
 
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime =  Time.fixedDeltaTime * slowness;
+        NormalTime();
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

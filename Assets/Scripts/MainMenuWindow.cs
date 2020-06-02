@@ -7,6 +7,7 @@ public class MainMenuWindow : MonoBehaviour
 {
     private void Awake() {
         transform.Find("PlayButton").GetComponent<Button_UI>().ClickFunc = () => {
+            Cowboy.goDown = true;
             Loader.Load(Loader.Scene.GameScene);
         };
 
