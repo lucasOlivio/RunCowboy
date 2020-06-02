@@ -7,7 +7,7 @@ public class LoaderUpdate : MonoBehaviour
     public Animator animator;  
 
     private void Start() {
-        animator.SetLayerWeight (1, 1f);
+
     }
 
     private void Update()

@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
             SoundManager.GetInstance().PlaySoundBackground(SoundManager.SoundBackground.BackgroundMusic);
             Cowboy.GetInstance().OnEnd += OnEnd;
             Cowboy.GetInstance().OnStart += OnStart;
+        } else if(sceneName == "LoadingScene") {
+            Cowboy.GetInstance().GetComponent<Animation>().Play();
         }
     }
 

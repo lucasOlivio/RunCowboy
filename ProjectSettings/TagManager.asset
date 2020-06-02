@@ -43,3 +43,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Fence
+    uniqueID: 558761321
+    locked: 0
+  - name: Cowboy
+    uniqueID: 3168466045
+    locked: 0

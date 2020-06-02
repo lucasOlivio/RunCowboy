@@ -78,6 +78,7 @@ public class Cowboy : MonoBehaviour
 
         targetPos.x = Mathf.Clamp(targetPos.x, -MAP_RANGE, MAP_RANGE);
         targetPos.y = PLAYER_Y;
+
         transform.position = Vector2.Lerp(transform.position, targetPos, Time.fixedDeltaTime * speed);
     }
 
@@ -90,6 +91,7 @@ public class Cowboy : MonoBehaviour
 
         targetPos.x = Mathf.Clamp(targetPos.x, -MAP_RANGE, MAP_RANGE);
         targetPos.y = PLAYER_Y;
+        
         transform.position = Vector2.Lerp(transform.position, targetPos, Time.fixedDeltaTime * speed);
     }
 
@@ -115,7 +117,7 @@ public class Cowboy : MonoBehaviour
         } else if(col.tag == "Fence") {
             state = State.Dead;
 
-            col.transform.GetComponent<Animator>().enabled = false;
+            col.transform.GetComponent<Animator>().enabled = true;
 
             if(OnEnd != null) OnEnd(this, EventArgs.Empty);
         }
