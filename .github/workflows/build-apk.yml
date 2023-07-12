@@ -25,7 +25,7 @@ jobs:
         os:
           - windows-2019
         unity:
-          - { version: "2019.3.7f1" }
+          - { version: "2019.3.7f1", changeset: "6437fd74d35d" }
     steps:
       
       # Install UnityHub
