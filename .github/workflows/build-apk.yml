@@ -62,12 +62,12 @@ jobs:
           npm install -g ./unity-license-activate
           unity-license-activate "$env:UNITY_EMAIL" "$env:UNITY_PASSWORD" Unity_v${{ matrix.unity.version }}.alf --authenticator-key "$env:UNITY_TOTP_KEY"
       
-      # # Upload a screenshot (uncomment in case of error in previous step)
-      # - name: 🩺 Upload error screenshot
-      #   uses: actions/upload-artifact@v1
-      #   with:
-      #     name: screenshot_error
-      #     path: error.png
+      # Upload a screenshot (uncomment in case of error in previous step)
+      - name: 🩺 Upload error screenshot
+        uses: actions/upload-artifact@v1
+        with:
+          name: screenshot_error
+          path: error.png
 
       # Use license to activate Unity editor     
       - name: Activate License
