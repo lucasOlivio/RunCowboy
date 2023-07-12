@@ -55,7 +55,7 @@ jobs:
         continue-on-error: true        # Add this line to get pass the error flag
         run: |
           npm install -g unity-verify-code
-          git clone -b ci https://github.com/homuler/unity-license-activate.git
+          git clone -b main https://github.com/homuler/unity-license-activate.git
           cd unity-license-activate
           npm install
           cd ..
