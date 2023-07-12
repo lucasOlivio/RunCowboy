@@ -13,7 +13,7 @@ public class Cowboy : MonoBehaviour
 
     private int score;
     private float dificulty = .0f;
-    private float maxDificulty = 0.8f;
+    private float maxDificulty = 1f;
 
     private Rigidbody2D playerBody;
     private Vector3 touchRealPosition;
