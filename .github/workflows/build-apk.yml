@@ -37,7 +37,7 @@ jobs:
       # Install UnityEditor
       - name: Install UnityEditor
         run: |
-          Start-Process -NoNewWindow -Wait -PassThru "C:\Program Files\Unity Hub\Unity Hub.exe" -ArgumentList "-- --headless install --version ${{ matrix.unity.version }}"
+          Start-Process -NoNewWindow -Wait -PassThru "C:\Program Files\Unity Hub\Unity Hub.exe" -ArgumentList "-- --headless install --version ${{ matrix.unity.version }} --changeset ${{ matrix.unity.changeset }}"
           exit 0
 
       # Generate license activation file
