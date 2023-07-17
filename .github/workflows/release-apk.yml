@@ -20,6 +20,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: v${{ github.event.inputs.version }}
+      - uses: actions/checkout@v3
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
