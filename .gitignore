@@ -2,7 +2,8 @@
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
-/[Bb]uild/
+[Bb]uild/**
+![Bb]uild/**/*.apk
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
@@ -18,7 +19,6 @@
 *.sln.docstates
 
 # Build results
-*.apk
 *.unitypackage
 
 # Unity3D Asset Database

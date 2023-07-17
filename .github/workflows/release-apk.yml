@@ -1,0 +1,30 @@
+name: Release APK
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Application version'
+        required: true
+        default: '1.0.0'
+jobs:
+  export_game:
+    # Always use ubuntu-latest for this action
+    runs-on: ubuntu-latest
+    # Add permission for release creation. Can be made narrower according to your needs
+    permissions: write-all
+    steps:
+      # https://github.com/ncipollo/release-action
+      - name: create release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generateReleaseNotes: true
+          tag: v${{ github.event.inputs.version }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: Build/runcowboy.apk
+          asset_name: runcowboy.apk
+          tag: v${{ github.event.inputs.version }}
+          overwrite: true
